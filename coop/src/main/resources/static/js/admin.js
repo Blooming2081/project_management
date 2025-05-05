@@ -142,3 +142,82 @@ function handleDeclineInvite(button) {
   })
   .catch(() => alert('초대 거절 실패'));
 }
+
+// 프로젝트 관리 관련 ---------------------------------------------------------
+// 편집 중인 프로젝트 ID 보관
+let currentEditId = null;
+
+/**
+ * 프로젝트 수정 모달 열기
+ * @param {number|string} id - 프로젝트 ID
+ * @param {string} name - 기존 프로젝트명
+ */
+function openEditProjectModal(id, name) {
+  currentEditId = id;
+  const input = document.getElementById('editProjectNameInput');
+  input.value = name;
+  input.classList.remove('is-invalid');
+  new bootstrap.Modal(
+    document.getElementById('editProjectModal')
+  ).show();
+}
+
+/**
+ * 프로젝트 삭제 처리 (메인 컨트롤러 DELETE)
+ * @param {number|string} id - 프로젝트 ID
+ */
+function confirmDeleteProject(id) {
+  if (!confirm('정말 이 프로젝트를 삭제하시겠습니까?')) return;
+
+  fetch(`/projects/delete/${id}`, { method: 'DELETE' })
+    .then(res => {
+      if (!res.ok) throw new Error();
+      // 테이블 행 제거
+      const row = document.querySelector(`tr[data-id="${id}"]`);
+      if (row) row.remove();
+      // 사이드바 탭 제거
+      const tab = document.querySelector(`.project-tab[data-id="${id}"]`);
+      if (tab) tab.remove();
+    })
+    .catch(() => alert('삭제에 실패했습니다.'));
+}
+
+// 수정 저장 버튼 처리 (메인 컨트롤러 PUT)
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById('confirmEditProjectBtn');
+  if (!saveBtn) return;
+
+  saveBtn.addEventListener('click', () => {
+    const input = document.getElementById('editProjectNameInput');
+    const newName = input.value.trim();
+    if (!newName) {
+      input.classList.add('is-invalid');
+      return;
+    }
+
+    fetch('/projects/update', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId: currentEditId, projectName: newName })
+    })
+      .then(res => {
+        if (!res.ok) throw new Error();
+        // 테이블 행 텍스트 갱신
+        const row = document.querySelector(`tr[data-id="${currentEditId}"]`);
+        if (row) row.children[1].textContent = newName;
+        // 사이드바 탭 텍스트 갱신
+        const tabName = document.querySelector(
+          `.project-tab[data-id="${currentEditId}"] .project-name`
+        );
+        if (tabName) tabName.textContent = newName;
+      })
+      .catch(() => alert('수정에 실패했습니다.'))
+      .finally(() => {
+        // 모달 닫기
+        const modalEl = document.getElementById('editProjectModal');
+        bootstrap.Modal.getInstance(modalEl).hide();
+      });
+  });
+});
+
+

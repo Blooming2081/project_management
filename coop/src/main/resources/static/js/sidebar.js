@@ -115,47 +115,7 @@ closeToggle.addEventListener("click", () => {
 				.catch(console.error);
 		});
 
-		// 4) 수정·삭제 이벤트 위임
-		projectList.addEventListener('click', e => {
-			// 수정/삭제 링크를 클릭했을 때만 기본 동작을 막고 처리
-			if (e.target.matches('.edit-project') || e.target.matches('.delete-project')) {
-				e.preventDefault();
-				const id = e.target.dataset.id;
-				if (!id) return;
 
-				// 수정
-				if (e.target.matches('.edit-project')) {
-
-
-					const oldName = e.target.closest('.accordion-item')
-						.querySelector('.accordion-button').textContent;
-					const newName = prompt('프로젝트 이름 수정', oldName);
-					if (!newName?.trim()) return;
-					fetch('/projects/update', {
-						method: 'PUT',
-						headers: { 'Content-Type': 'application/json' },
-						body: JSON.stringify({ projectId: Number(id), projectName: newName.trim() })
-					})
-						.then(res => res.json())
-						.then(updated => {
-							e.target.closest('.accordion-item')
-								.querySelector('.accordion-button')
-								.textContent = updated.projectName;
-						})
-						.catch(console.error);
-				}
-				// 삭제
-				else {
-
-					if (!confirm('정말 삭제하시겠습니까?')) return;
-					fetch(`/projects/delete/${id}`, { method: 'DELETE' })
-						.then(() => {
-							e.target.closest('.accordion-item').remove();
-						})
-						.catch(console.error);
-				}
-			}
-		});
 
 		// ─── 프로젝트 리스트 렌더링 ───────────────────────────────────────────
 		function appendProject(proj) {
@@ -163,9 +123,7 @@ closeToggle.addEventListener("click", () => {
 			const item = clone.querySelector('.accordion-item');
 			const btn = clone.querySelector('.accordion-button');
 			const collapse = clone.querySelector('.accordion-collapse');
-			const dropdown = clone.querySelector('[data-bs-toggle="dropdown"]');
-			const editLink = clone.querySelector('.edit-project');
-			const delLink = clone.querySelector('.delete-project');
+
 
 			const headerId = `heading-${proj.projectId}`;
 			const collapseId = `collapse-${proj.projectId}`;
@@ -179,12 +137,6 @@ closeToggle.addEventListener("click", () => {
 			collapse.setAttribute('aria-labelledby', headerId);
 			collapse.setAttribute('data-bs-parent', '#project-list');
 
-			dropdown.id = `dropdown-${proj.projectId}`;
-			clone.querySelector('.dropdown-menu')
-				.setAttribute('aria-labelledby', dropdown.id);
-
-			editLink.dataset.id = proj.projectId;
-			delLink.dataset.id = proj.projectId;
 
 			// ✅ 버튼 삽입
 			const body = clone.querySelector('.accordion-body');

@@ -1,13 +1,20 @@
 <aside xmlns:th="http://www.thymeleaf.org" th:fragment="submenu"
 	class="sidebar-left" id="leftSidebar">
+	<div class="circle-icon" sec:authorize="isAuthenticated()"
+		xmlns:sec="http://www.thymeleaf.org/extras/spring-security" mb-2>
+		<a th:href="@{/index}" title="홈 화면"> <img
+			th:src="@{/images/home.png}" alt="홈 화면" />
+		</a>
+	</div>
 	<div class="circle-icon position-relative">
 		🔔
 		<!-- <span
 			class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 			 </span> -->
+
 	</div>
 	<div class="container mt-3">
-	<a href="/todo" class="circle-icon">📅</a>
+		<a href="/todo" class="circle-icon">📅</a>
 	</div>
 
 

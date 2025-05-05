@@ -19,23 +19,16 @@
 	<div id="project-list" class="accordion"></div>
 
 	<template id="project-item-template">
-		<div class="accordion-item" data-id="">
+		<div class="accordion-item" th:attr="data-id=__ID__">
 			<h2 class="accordion-header" id="heading-__ID__">
 				<!-- 프로젝트 이름 -->
 				<button class="accordion-button collapsed" type="button"
 					data-bs-toggle="collapse" data-bs-target="#collapse-__ID__"
-					aria-expanded="false" aria-controls="collapse-__ID__"></button>
-				<div class="dropdown position-relative">
-					<button class="btn btn-sm btn-link" type="button"
-						data-bs-toggle="dropdown" aria-expanded="false">⋮</button>
-					<ul class="dropdown-menu dropdown-menu-end shadow"
-						style="z-index: 1050;">
-						<li><a class="dropdown-item edit-project" href="#"
-							data-id="__ID__">수정</a></li>
-						<li><a class="dropdown-item delete-project" href="#"
-							data-id="__ID__">삭제</a></li>
-					</ul>
-				</div>
+					aria-expanded="false" aria-controls="collapse-__ID__">
+					<!-- 여기에 프로젝트 이름을 감싸는 span 추가 -->
+					<span class="project-name">__PROJECT_NAME__</span>
+				</button>
+
 
 			</h2>
 			<div class="accordion-collapse collapse">
