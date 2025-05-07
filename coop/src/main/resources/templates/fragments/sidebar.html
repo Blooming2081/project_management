@@ -11,7 +11,8 @@
 	<div class="profile-box">
 		<a href="#" data-bs-toggle="modal" data-bs-target="#profileModal"
 			style="text-decoration: none;">
-			<div class="circle-icon">👤</div>
+			<div class="circle-icon"><img
+				th:src="@{/images/profile.png}" alt="프로필" /></div>
 		</a>
 		<div class="user-info">
 			<span class="nickname" sec:authentication="principal.nickname"></span><span>님</span>

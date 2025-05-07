@@ -1,20 +1,22 @@
 <aside xmlns:th="http://www.thymeleaf.org" th:fragment="submenu"
 	class="sidebar-left" id="leftSidebar">
-	
-		<div class="circle-icon" mb-2>
-			<a th:href="@{/index}" title="메인"> <img
-				th:src="@{/images/home.png}" alt="메인" />
-			</a>
-		</div>
-	
+
+	<div class="circle-icon" mb-2>
+		<a th:href="@{/index}" title="메인"> <img
+			th:src="@{/images/home.png}" alt="메인" />
+		</a>
+	</div>
+
 	<div class="circle-icon position-relative">
-		🔔
-		<!-- <span
+		<a> <img th:src="@{/images/al.png}" alt="알림" /> <!-- <span
 			class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 			 </span> -->
+		</a>
 	</div>
-	<div class="container mt-3">
-	<a href="/todo" class="circle-icon">📅</a>
+	<div class="circle-icon container mt-3">
+		<a th:href="@{/todo}" title="투두리스트"> <img
+			th:src="@{/images/todo.png}" alt="투두" />
+		</a>
 	</div>
 
 
@@ -23,10 +25,13 @@
 		<div class="circle-icon" sec:authorize="isAuthenticated()"
 			xmlns:sec="http://www.thymeleaf.org/extras/spring-security" mb-2>
 			<a th:href="@{/logout}" title="로그아웃"> <img
-				th:src="@{/images/log-out1.png}" alt="로그아웃" />
+				th:src="@{/images/log-out.png}" alt="로그아웃" />
 			</a>
 		</div>
-		<div class="circle-icon mb-3">⚙️</div>
+		<div class="circle-icon mb-3">
+			<a> <img th:src="@{/images/set.png}" alt="설정" />
+			</a>
+		</div>
 	</div>
 
 
